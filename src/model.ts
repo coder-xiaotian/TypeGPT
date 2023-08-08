@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ChatGPTUnofficialProxyAPI } from "chatgpt";
 import { Result, success, error } from "./result";
 
 /**
@@ -39,7 +40,10 @@ export interface TypeChatLanguageModel {
  * @returns An instance of `TypeChatLanguageModel`.
  */
 export function createLanguageModel(env: Record<string, string | undefined>): TypeChatLanguageModel {
-    if (env.OPENAI_API_KEY) {
+    if (env.OPENAI_ACCESS_TOKEN) {
+        const accessToken = env.OPENAI_ACCESS_TOKEN ?? missingEnvironmentVariable("OPENAI_ACCESS_TOKEN");
+        return createChatGPTUnofficialProxyAPI(accessToken);
+    } else if (env.OPENAI_API_KEY) {
         const apiKey = env.OPENAI_API_KEY ?? missingEnvironmentVariable("OPENAI_API_KEY");
         const model = env.OPENAI_MODEL ?? missingEnvironmentVariable("OPENAI_MODEL");
         const endPoint = env.OPENAI_ENDPOINT ?? "https://api.openai.com/v1/chat/completions";
@@ -113,6 +117,41 @@ function createAxiosLanguageModel(url: string, config: object, defaultParams: Re
             }
             await sleep(retryPauseMs);
             retryCount++;
+        }
+    }
+}
+
+function createChatGPTUnofficialProxyAPI(OPENAI_ACCESS_TOKEN: string) {
+    const client = new ChatGPTUnofficialProxyAPI({
+        accessToken: OPENAI_ACCESS_TOKEN
+    })
+    
+    let conversationId: string, parentMessageId: string
+    const model: TypeChatLanguageModel = {
+        complete
+    };
+    return model;
+
+    async function complete(prompt: string) {
+        let retryCount = 0;
+        const retryMaxAttempts = model.retryMaxAttempts ?? 3;
+        const retryPauseMs = model.retryPauseMs ?? 1000;
+        while (true) {
+            try {
+                const result = await client.sendMessage(prompt, {
+                    conversationId,
+                    parentMessageId
+                });
+                conversationId = result.conversationId as string
+                parentMessageId = result.id
+                return success(result.text ?? "");
+            } catch(e) {
+                if (retryCount >= retryMaxAttempts) {
+                    return error(`REST API error: ${e}`);
+                }
+                await sleep(retryPauseMs);
+                retryCount++;
+            }
         }
     }
 }
