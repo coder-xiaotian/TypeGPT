@@ -1,5 +1,4 @@
 import axios from "axios";
-import { ChatGPTUnofficialProxyAPI } from "chatgpt";
 import { Result, success, error } from "./result";
 
 /**
@@ -122,10 +121,6 @@ function createAxiosLanguageModel(url: string, config: object, defaultParams: Re
 }
 
 function createChatGPTUnofficialProxyAPI(OPENAI_ACCESS_TOKEN: string) {
-    const client = new ChatGPTUnofficialProxyAPI({
-        accessToken: OPENAI_ACCESS_TOKEN
-    })
-    
     let conversationId: string, parentMessageId: string
     const model: TypeChatLanguageModel = {
         complete
@@ -133,6 +128,11 @@ function createChatGPTUnofficialProxyAPI(OPENAI_ACCESS_TOKEN: string) {
     return model;
 
     async function complete(prompt: string) {
+        const { ChatGPTUnofficialProxyAPI } = await import("chatgpt");
+        const client = new ChatGPTUnofficialProxyAPI({
+            accessToken: OPENAI_ACCESS_TOKEN
+        })
+        
         let retryCount = 0;
         const retryMaxAttempts = model.retryMaxAttempts ?? 3;
         const retryPauseMs = model.retryPauseMs ?? 1000;

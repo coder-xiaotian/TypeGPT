@@ -206,7 +206,7 @@ export function createProgramTranslator(model: TypeChatLanguageModel, schema: st
             `\`\`\`\n${translator.validator.schema}\`\`\`\n` +
             `The following is a user request:\n` +
             `"""\n${request}\n"""\n` +
-            `The following is the user request translated into a JSON program object with 2 spaces of indentation and no properties with the value undefined:\n`;
+            `The following is the user request translated into a JSON program object and no properties with the value undefined((Don't write any explanation)):\n`;
     }
 
     function createRepairPrompt(validationError: string) {

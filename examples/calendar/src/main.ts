@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+// @ts-ignore
 import dotenv from "dotenv";
 import { createLanguageModel, createJsonTranslator, processRequests } from "typechat";
 import { CalendarActions } from './calendarActionsSchema';
@@ -16,6 +17,7 @@ translator.validator.stripNulls = true;
 processRequests("📅> ", process.argv[2], async (request) => {
     const response = await translator.translate(request);
     if (!response.success) {
+        // @ts-ignore
         console.log(response.message);
         return;
     }

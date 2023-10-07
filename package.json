@@ -1,10 +1,9 @@
 {
-  "name": "typechat",
-  "author": "Microsoft",
-  "version": "0.0.10",
+  "name": "typegpt",
+  "author": "xiaotian",
+  "version": "0.0.1",
   "license": "MIT",
-  "type": "module",
-  "description": "TypeChat is an experimental library that makes it easy to build natural language interfaces using types.",
+  "description": "TypeGPT is fork of TypeChat used unofficial api.",
   "keywords": [
     "schema",
     "LLM",
@@ -12,13 +11,13 @@
     "TypeScript",
     "validation"
   ],
-  "homepage": "https://github.com/microsoft/TypeChat#readme",
+  "homepage": "https://github.com/coder-xiaotian/TypeGPT#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/microsoft/TypeChat.git"
+    "url": "https://github.com/coder-xiaotian/TypeGPT"
   },
   "bugs": {
-    "url": "https://github.com/microsoft/TypeChat/issues"
+    "url": "https://github.com/coder-xiaotian/TypeGPT/issues"
   },
   "scripts": {
     "build": "tsc -p src",
@@ -42,7 +41,7 @@
     "typescript": "^5.1.3"
   },
   "devDependencies": {
-    "@types/node": "^20.3.3"
+    "@types/node": "^20.4.9"
   },
   "workspaces": [
     "./",

@@ -1,6 +1,8 @@
 import fs from "fs";
 import path from "path";
+// @ts-ignore
 import dotenv from "dotenv";
+// @ts-ignore
 import { createLanguageModel, processRequests, createProgramTranslator, evaluateJsonProgram, getData } from "typechat";
 
 // TODO: use local .env file.
@@ -11,6 +13,7 @@ const schema = fs.readFileSync(path.join(__dirname, "mathSchema.ts"), "utf8");
 const translator = createProgramTranslator(model, schema);
 
 // Process requests interactively or from the input file specified on the command line
+// @ts-ignore
 processRequests("➕➖✖️➗🟰> ", process.argv[2], async (request) => {
     const response = await translator.translate(request);
     if (!response.success) {
